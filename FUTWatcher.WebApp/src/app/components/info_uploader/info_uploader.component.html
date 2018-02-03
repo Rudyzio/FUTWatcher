@@ -1,0 +1,222 @@
+<toaster-container></toaster-container>
+
+<h1>Info Uploader</h1>
+<div class="container">
+  <div class="visible-lg visible-md visible-sm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="info">Information JSON:</label>
+          <textarea class="form-control" rows="10" id="info" [(ngModel)]="informationJSON"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-inline">
+        <div class="col-md-6">
+          <label for="infoType" class="control-label">Select information type:</label>
+          <select class="form-control" id="infoType" [(ngModel)]="informationType">
+            <option value="Bought">Bought Players</option>
+            <option value="Sold">Sold Players</option>
+            <option value="Mine">My Players</option>
+          </select>
+          <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+          <button class="btn btn-primary" type="button" (click)="uploadJSON()">Upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <!-- <div class="hidden-lg hidden-md hidden-sm"> -->
+    <div class="row">
+      <div class="col-xs-11">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>
+              <strong>Bronze Packs</strong>
+            </h4>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-7">
+                <input type="number" class="form-control" placeholder="Quick sell value" [(ngModel)]="quickSellValue">
+              </div>
+              <div class="col-xs-3">
+                <button type="button" class="btn btn-default" (click)="bronzePackOpened()">
+                  <span class="glyphicon glyphicon-plus-sign"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-11">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>
+              <strong>My Coins</strong>
+            </h4>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-7">
+                <input type="number" class="form-control" placeholder="My coins now" [(ngModel)]="actualCoins">
+              </div>
+              <div class="col-xs-3">
+                <button type="button" class="btn btn-default" (click)="updateMyCoins()">
+                  <span class="glyphicon glyphicon-plus-sign"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-11">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>
+              <strong>Consumables sold</strong>
+            </h4>
+          </div>
+          <div class="panel-body">
+            <div class="form-inline">
+              <div class="col-md-4">
+                <input type="number" class="form-control" placeholder="Amount" [(ngModel)]="consumablesAmount">
+              </div>
+              <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+              <div class="col-md-4">
+                <input type="number" class="form-control" placeholder="Cost each" [(ngModel)]="consumablesCostEach">
+              </div>
+              <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+              <div class="col-md-2">
+                <label>
+                  <input type="checkbox" [checked]="isBronzeConsumable" (change)="isBronzeConsumable = !isBronzeConsumable" /> Bronze
+                </label>
+              </div>
+              <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+              <div class="col-md-2">
+                <button class="btn btn-primary" type="button" (click)="saveConsumablesSold()">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-11">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>
+              <strong>Players sold</strong>
+            </h4>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-7">
+                <input type="text" class="form-control" placeholder="Player Name" [(ngModel)]="playerNameSold">
+              </div>
+              <div class="col-xs-3">
+                <button class="btn btn-primary" type="button" (click)="searchPlayerName(true)">Search</button>
+              </div>
+            </div>
+            <div *ngIf="selling && players && players.length != 0" class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Position</th>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th class="visible-lg visible-md visible-sm">Club</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let player of players">
+                    <tr [style.background]="playerBackgroundColor(player)" [ngStyle]="{'Color': '#000000'}">
+                      <td>
+                        <input type="checkbox" [checked]="player.Id == selectedPlayer" (click)="selectedPlayer = player.Id">
+                      </td>
+                      <td>{{player.Position}}</td>
+                      <td>{{ player.PlayerType.CommonName.length == 0 ? (player.PlayerType.FirstName + " " + player.PlayerType.LastName) : player.PlayerType.CommonName}}</td>
+                      <td>{{player.Rating}}</td>
+                      <td>{{player.Club.Name}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+            <div class="row">
+              <div class="col-xs-7">
+                <input type="number" class="form-control" placeholder="Cost" [(ngModel)]="sellPlayerCost">
+              </div>
+            </div>
+            <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+            <button class="btn btn-primary" type="button" (click)="savePlayerOperation()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-11">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>
+              <strong>Players bought</strong>
+            </h4>
+          </div>
+          <div class="panel-body">
+            <div class="form-inline">
+              <div class="row">
+                <div class="col-xs-7">
+                  <input type="text" class="form-control" placeholder="Player Name" [(ngModel)]="playerNameSold">
+                </div>
+                <div class="col-xs-3">
+                  <button class="btn btn-primary" type="button" (click)="searchPlayerName(false)">Search</button>
+                </div>
+              </div>
+              <div *ngIf="!selling && players && players.length != 0" class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Position</th>
+                      <th>Name</th>
+                      <th>Rating</th>
+                      <th class="visible-lg visible-md visible-sm" *ngIf="showClub">Club</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let player of players">
+                      <tr [style.background]="playerBackgroundColor(player)" [ngStyle]="{'Color': '#000000'}">
+                        <td>
+                          <input type="checkbox" [checked]="player.Id == selectedPlayer" (click)="selectedPlayer = player.Id">
+                        </td>
+                        <td>{{player.Position}}</td>
+                        <td>{{ player.PlayerType.CommonName.length == 0 ? (player.PlayerType.FirstName + " " + player.PlayerType.LastName) : player.PlayerType.CommonName}}</td>
+                        <td>{{player.Rating}}</td>
+                        <td>{{player.Club.Name}}</td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+              <div class="row">
+                <div class="col-xs-7">
+                  <input type="number" class="form-control" placeholder="Cost" [(ngModel)]="buyPlayerCost">
+                </div>
+              </div>
+              <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+              <button class="btn btn-primary" type="button" (click)="savePlayerOperation()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

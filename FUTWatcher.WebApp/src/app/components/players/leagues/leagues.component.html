@@ -1,0 +1,55 @@
+<div class="form-horizontal">
+  <div class="row" align="center">
+    <div class="col-md-5" align="left">
+      <div class="form-inline">
+        <label for="leagues" class="col-md-2 control-label">League:</label>
+        <div class="col-md-10">
+          <select id="leagues" class="form-control" (change)="onLeagueChange($event.target.value)">
+            <option *ngFor="let league of leagues" [value]="league.Id">{{league.Name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+    <div class="col-md-2" align="center">
+      <label class="control-label">Cost: {{leagueCost}}</label>
+    </div>
+    <div class="col-md-2" align="center">
+      <label class="control-label">{{ownedLeaguePlayers}}/{{totalLeaguePlayers}} players</label>
+    </div>
+  </div>
+  <div class="visible-lg visible-md visible-sm">&nbsp;</div>
+  <div class="hidden-lg hidden-md hidden-sm"><hr></div>
+  <div *ngIf="clubs && clubs.length != 0" class="row" align="center">
+    <div class="col-md-5" align="left">
+      <div class="form-inline">
+        <label for="clubs" class="col-md-2 control-label">Club:</label>
+        <div class="col-md-10">
+          <select id="clubs" class="form-control" (change)="onClubChange($event.target.value)">
+            <option *ngFor="let club of clubs" [value]="club.Id">{{club.Name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+    <div class="col-md-2" align="center">
+      <label class="control-label" *ngIf="players.length != 0">Cost: {{teamCost}}</label>
+    </div>
+    <div class="col-md-2" align="center">
+      <label class="control-label">{{ownedClubPlayers}}/{{totalClubPlayers}} owned</label>
+    </div>
+    <div class="col-md-2" align="center">
+      <label class="control-label">Rating: {{teamRating}}</label>
+    </div>
+  </div>
+  <div class="visible-lg visible-md visible-sm">&nbsp;</div>
+  <div [hidden]="!teamHasAllPositions" style="background-color: green">
+    Team fully ready for SBC
+  </div>
+  <div [hidden]="!teamHasMinimumPositions" style="background-color: yellow">
+    Team partially ready for SBC
+  </div>
+</div>
+<players-table [players]="players" [filterIdName]="'leaguesFilter'" [showLeague]="false" [showClub]="false" [showNation]="true"
+  [showFilters]="true" [showSearch]="true">
+</players-table>

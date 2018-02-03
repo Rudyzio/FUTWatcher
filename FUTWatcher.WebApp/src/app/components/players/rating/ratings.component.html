@@ -1,0 +1,9 @@
+<div class="form-group form-inline">
+  <label for="ratings" class="control-label">Select rating:</label>
+  <select id="ratings" class="form-control" [value]="currentRating" (change)="currentRating = $event.target.value; onRatingChange()">
+    <option *ngFor="let rating of ratings" [value]="rating">{{rating}}</option>
+  </select>
+</div>
+<players-table [players]="players" [filterIdName]="'ratingsFilter'" [showLeague]="true" [showClub]="true" [showNation]="false"
+  [showFilters]="true" [showSearch]="true">
+</players-table>

@@ -1,0 +1,92 @@
+<div *ngIf="players && players.length != 0">
+  <div class="panel-group">
+    <div *ngIf="showFilters" class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#{{filterIdName}}">Filters</a>
+        </h4>
+      </div>
+      <div id="{{filterIdName}}" class="panel-collapse collapse">
+        <div class="panel-body">
+          <h4>Card Type</h4>
+          <label class="checkbox-inline">
+            <input type="checkbox" [checked]="cardTypeFilter.indexOf('rare_gold') > -1" [disabled]="ownedPlayersFilter" (change)="onFilterCardType($event, 'rare_gold')">Rare_Gold</label>
+          <label class="checkbox-inline">
+            <input type="checkbox" [checked]="cardTypeFilter.indexOf('gold') > -1" (change)="onFilterCardType($event, 'gold')">Gold</label>
+          <label class="checkbox-inline">
+            <input type="checkbox" [checked]="cardTypeFilter.indexOf('rare_silver') > -1" (change)="onFilterCardType($event, 'rare_silver')">Rare_Silver</label>
+          <label class="checkbox-inline">
+            <input type="checkbox" [checked]="cardTypeFilter.indexOf('silver') > -1" (change)="onFilterCardType($event, 'silver')">Silver</label>
+          <label class="checkbox-inline">
+            <input type="checkbox" [checked]="cardTypeFilter.indexOf('rare_bronze') > -1" (change)="onFilterCardType($event, 'rare_bronze')">Rare_Bronze</label>
+          <label class="checkbox-inline">
+            <input type="checkbox" [checked]="cardTypeFilter.indexOf('bronze') > -1" (change)="onFilterCardType($event, 'bronze')">Bronze</label>
+          <hr>
+          <h4 *ngIf="showNation">Utils</h4>
+          <label *ngIf="showNation" class="checkbox-inline">
+            <input type="checkbox" [checked]="ownedPlayersFilter" (change)="onOwnedPlayers()">Owned Players</label>
+          <label *ngIf="showNation" class="checkbox-inline">
+            <input type="checkbox" [checked]="notOwnedPlayersFilter" (change)="onNotOwnedPlayers()">Missing Players</label>
+            <label *ngIf="showNation" class="checkbox-inline">
+              <input type="checkbox" [checked]="missingPositionsFilterBoolean" (change)="onToggleMissingPositions()">Missing Positions</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showSearch" class="form-group">
+    <div class="input-group">
+      <div class="input-group-addon">
+        <i class="glyphicon glyphicon-search"></i>
+      </div>
+      <input type="text" class="form-control" placeholder="Type to search..." (input)="filterPlayer($event.target.value)" [(ngModel)]="searchPlayerString">
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Rating</th>
+          <th class="visible-lg visible-md visible-sm" *ngIf="showNation">Nation</th>
+          <th class="visible-lg visible-md visible-sm" *ngIf="showLeague">League</th>
+          <th class="visible-lg visible-md visible-sm" *ngIf="showClub">Club</th>
+          <th class="visible-lg visible-md visible-sm col-md-1">General Profit</th>
+          <th>Owned</th>
+          <th class="visible-lg visible-md visible-sm col-md-1">Last Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let player of filteredPlayers">
+          <tr *ngIf="showAll || cardTypeFilter.includes(player.Color)" [style.background]="playerBackgroundColor(player)" [ngStyle]="{'Color': '#000000'}">
+            <td [style.background]="playerIsOwned(player)"></td>
+            <td>{{player.Position}}</td>
+            <td>{{ player.PlayerType.CommonName.length == 0 ? (player.PlayerType.FirstName + " " + player.PlayerType.LastName) : player.PlayerType.CommonName}}</td>
+            <td>{{player.Rating}}</td>
+            <td class="visible-lg visible-md visible-sm" *ngIf="showNation">{{player.Nation.Name}}</td>
+            <td class="visible-lg visible-md visible-sm" *ngIf="showLeague">{{player.League.Name}}</td>
+            <td class="visible-lg visible-md visible-sm" *ngIf="showClub">{{player.Club.Name}}</td>
+            <td class="visible-lg visible-md visible-sm">
+              <input *ngIf="editRow == player.Id" class="form-control" type="number" [(ngModel)]="player.Cost">
+              <span *ngIf="editRow != player.Id">{{player.Cost}}</span>
+            </td>
+            <td>
+              <input type="checkbox" [disabled]="editRow != player.Id" [(ngModel)]="player.OwnedByMe">
+            </td>
+            <td class="visible-lg visible-md visible-sm">
+              <!-- <input class="form-control" type="number" [(ngModel)]="player.Amount"> -->
+              <span>{{player.LastPrice}}</span>
+            </td>
+            <td>
+              <button class="btn btn-primary" *ngIf="editRow != player.Id" type="button" (click)="editRow = player.Id; previousCost = player.Cost">Edit</button>
+              <button class="btn btn-primary" *ngIf="editRow == player.Id" type="button" (click)="onSavePlayer(player)">Save</button>
+              <button class="btn btn-default" *ngIf="editRow == player.Id" type="button" (click)="editRow = 0; player.Cost = previousCost">Cancel</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

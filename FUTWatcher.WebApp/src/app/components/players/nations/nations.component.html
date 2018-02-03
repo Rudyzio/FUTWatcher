@@ -1,0 +1,70 @@
+<div class="form-group form-inline">
+  <label for="nations" class="control-label">Select nation:</label>
+  <select id="nations" class="form-control" (change)="actualNation = $event.target.value; onNationChange()">
+    <option *ngFor="let nation of nations" [value]="nation.Id">{{nation.Name}}</option>
+  </select>
+</div>
+<div>
+  <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
+</div>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Position</th>
+        <th>Name</th>
+        <th>Rating</th>
+        <th class="visible-lg visible-md visible-sm">Nation</th>
+        <th class="visible-lg visible-md visible-sm">League</th>
+        <th class="visible-lg visible-md visible-sm">Club</th>
+        <th class="visible-lg visible-md visible-sm col-md-1">General Profit</th>
+        <th>Owned</th>
+        <th class="visible-lg visible-md visible-sm col-md-1">Last Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let player of players | paginate: { itemsPerPage: 20, currentPage: currentPage, totalItems: totalPlayers }">
+        <tr [style.background]="playerBackgroundColor(player)" [ngStyle]="{'Color': '#000000'}">
+          <td [style.background]="playerIsOwned(player)"></td>
+          <td>{{player.Position}}</td>
+          <td>{{ player.PlayerType.CommonName.length == 0 ? (player.PlayerType.FirstName + " " + player.PlayerType.LastName) : player.PlayerType.CommonName}}</td>
+          <td>{{player.Rating}}</td>
+          <td class="visible-lg visible-md visible-sm">{{player.League.Name}}</td>
+          <td class="visible-lg visible-md visible-sm">{{player.Club.Name}}</td>
+          <td class="visible-lg visible-md visible-sm">
+            <input *ngIf="editRow == player.Id" class="form-control" type="number" [(ngModel)]="player.Cost">
+            <span *ngIf="editRow != player.Id">{{player.Cost}}</span>
+          </td>
+          <td>
+            <input type="checkbox" [disabled]="editRow != player.Id" [(ngModel)]="player.OwnedByMe">
+          </td>
+          <td class="visible-lg visible-md visible-sm">
+            <span>{{player.LastPrice}}</span>
+          </td>
+          <td>
+            <button class="btn btn-primary" *ngIf="editRow != player.Id" type="button" (click)="editRow = player.Id; previousCost = player.Cost">Edit</button>
+            <button class="btn btn-primary" *ngIf="editRow == player.Id" type="button" (click)="onSavePlayer(player)">Save</button>
+            <button class="btn btn-default" *ngIf="editRow == player.Id" type="button" (click)="editRow = 0; player.Cost = previousCost">Cancel</button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <pagination-controls (pageChange)="getPage($event)"></pagination-controls>
+</div>
+
+<!-- <players-table 
+    [players]="players" 
+    [filterIdName]="'nationsFilter'"
+    [showLeague]="true"
+    [showClub]="true"
+    [showNation]="false"
+    [showFilters]="true"
+    [showSearch]="true"
+>
+</players-table> -->

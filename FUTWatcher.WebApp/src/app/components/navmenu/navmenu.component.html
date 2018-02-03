@@ -1,0 +1,65 @@
+<div class='main-nav'>
+    <div class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' [routerLink]="['/players']" (click)="toggleNavBar()">FUTWatcher</a>
+        </div>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse'>
+            <ul *ngIf="_loggedIn" class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/players']" (click)="toggleNavBar()">
+                        <span class='glyphicon glyphicon-th-list'></span> Players List
+                    </a>
+                </li>
+            </ul>
+            <ul *ngIf="_loggedIn" class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/search']" (click)="toggleNavBar()">
+                        <span class='glyphicon glyphicon-search'></span> Search Player
+                    </a>
+                </li>
+            </ul>
+            <ul *ngIf="_loggedIn" class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/infouploader']" (click)="toggleNavBar()">
+                        <span class='glyphicon glyphicon-upload'></span> Info Uploader
+                    </a>
+                </li>
+            </ul>
+            <ul *ngIf="_loggedIn" class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/statistics']" (click)="toggleNavBar()">
+                        <span class='glyphicon glyphicon-stats'></span> Statistics
+                    </a>
+                </li>
+            </ul>
+            <ul *ngIf="_loggedIn" class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/marketwatcher']" (click)="toggleNavBar()">
+                        <span class='glyphicon glyphicon-eye-open'></span> Market Watcher
+                    </a>
+                </li>
+            </ul>
+            <ul *ngIf="!_loggedIn" class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a (click)="login()" [routerLink]="['/login']" (click)="toggleNavBar()">
+                        <span class='glyphicon glyphicon-user'></span> Login
+                    </a>
+                </li>
+            </ul>
+            <ul *ngIf="_loggedIn" class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a (click)="logout()" [routerLink]="['/logout']" (click)="toggleNavBar()">
+                        <span class='glyphicon glyphicon-log-out'></span> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

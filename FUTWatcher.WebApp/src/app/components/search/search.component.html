@@ -1,0 +1,18 @@
+<toaster-container></toaster-container>
+<div class="container">
+  <h3>Player Search</h3>
+  <div class="row">
+    <div class="col-md-9 form-group">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="glyphicon glyphicon-search"></i>
+        </div>
+        <input type="text" class="form-control" placeholder="Type to search player..." [(ngModel)]="playerName">
+      </div>
+    </div>
+    <button type="button" class="col-md-2 btn btn-primary" (click)="searchPlayer()">Search Player</button>
+  </div>
+  <players-table [players]="players" [filterIdName]="'searchFilter'" [showLeague]="false" [showClub]="true" [showNation]="false"
+    [showFilters]="false" [showSearch]="false">
+  </players-table>
+</div>

@@ -1,0 +1,20 @@
+<h1>Statistics</h1>
+<div *ngIf="showGraph">
+  <div class="row">
+    <div class="col-md-6">
+      <chart id="dailyProfitGraph" [type]="'bar'" [data]="dailyProfitData" [options]="dailyProfitoptions"></chart>
+    </div>
+    <div class="col-md-6">
+      <chart id="coinsGraph" [type]="type" [data]="coinsData" [options]="coinsoptions"></chart>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <chart id="bronzePacksGraph" [type]="'bar'" [data]="bronzePacksData" [options]="bronzePacksoptions"></chart>
+    </div>
+    <div class="col-md-6">
+      <chart id="bronzePacksProfit" [type]="'bar'" [data]="bronzePacksProfit" [options]="bronzePacksProfitOptions"></chart>
+    </div>
+  </div>
+  <h4>Total profit from BPM: {{totalBronzePackProfit}} from {{totalBronzePacksOpened}} packs opened</h4>
+</div>
