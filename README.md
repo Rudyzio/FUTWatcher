@@ -17,6 +17,7 @@ In order to run the project proceed as described:
   - Clone the repository;
   - API (you need to have [.NET Core](https://www.microsoft.com/net/download/windows) installed) 
     - Go to the API folder
+    - Run ```dotnet restore```
     - Run ```dotnet ef database update``` to run the migrations
     - In order to populate the database:
         - Start the API with ```dotnet run``` 
